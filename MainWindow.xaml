@@ -1,0 +1,48 @@
+﻿<Window x:Class="CygNet.Opc.Ua.AlarmSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CygNet.Opc.Ua.AlarmSample"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="28" />
+        </Grid.RowDefinitions>
+        <ListView Margin="3" Name="lvAlarms">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Is Set" Width="Auto" DisplayMemberBinding="{Binding IsSet}" />
+                    <GridViewColumn Header="Alarm Priority" Width="Auto" DisplayMemberBinding="{Binding AlarmPriority}" />
+                    <GridViewColumn Header="Alarm Acknowledge" Width="Auto" DisplayMemberBinding="{Binding IsAcknowledged}" />
+                    <GridViewColumn Header="Alarm Condition" Width="Auto" DisplayMemberBinding="{Binding AlarmCondition}" />
+                    <GridViewColumn Header="PointTag" Width="Auto" DisplayMemberBinding="{Binding PointTag}" />
+                    <GridViewColumn Header="Primary Value" Width="Auto" DisplayMemberBinding="{Binding PointValue}" />
+                    <GridViewColumn Header="Reported Timestamp" Width="Auto" DisplayMemberBinding="{Binding ReportedTimestamp}" />
+                    <GridViewColumn Header="Received Timestamp" Width="Auto" DisplayMemberBinding="{Binding ReceivedTimestamp}" />
+                    <GridViewColumn Header="Is Active" Width="Auto" DisplayMemberBinding="{Binding IsActive}" />
+                    <GridViewColumn Header="Is Suppressed" Width="Auto" DisplayMemberBinding="{Binding IsSuppressed}" />
+                    <GridViewColumn Header="Alarm Category" Width="Auto" DisplayMemberBinding="{Binding AlarmCategory}" />
+                    <GridViewColumn Header="Alarm Priority Category" Width="Auto" DisplayMemberBinding="{Binding AlarmPriorityCategory}" />
+                    <GridViewColumn Header="Alarm Priority Category Description" Width="Auto" DisplayMemberBinding="{Binding AlarmPriorityCategoryDescription}" />
+                    <GridViewColumn Header="Highest Alarm Priority" Width="Auto" DisplayMemberBinding="{Binding HighestAlarmPriority}" />
+                    <GridViewColumn Header="Highest Alarm Priority Since Ack" Width="Auto" DisplayMemberBinding="{Binding HighestAlarmPrioritySinceAck}" />
+                    <GridViewColumn Header="Alarm Record Version" Width="Auto" DisplayMemberBinding="{Binding AlarmRecordVersion}" />
+                    <GridViewColumn Header="PointState" Width="Auto" DisplayMemberBinding="{Binding PointState}" />
+                    <GridViewColumn Header="NodeId" Width="Auto" DisplayMemberBinding="{Binding NodeId}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal">
+            <Label Content="Alarm count:" />
+            <Label Content="{Binding ElementName=lvAlarms, Path=Items.Count, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button MinWidth="80" Margin="3" Content="Refresh" Click="RefreshAlarmsButtonClicked" />
+            <Button MinWidth="80" Margin="3" Content="Clear" Click="ClearButtonClicked" />
+            <Button MinWidth="80" Margin="3" Content="Ack alarm" Click="AckAlarmButtonClicked" />
+        </StackPanel>
+    </Grid>
+</Window>
