@@ -62,7 +62,9 @@ namespace CygNet.Opc.Ua.AlarmSample
 
         private void ClearButtonClicked(object sender, RoutedEventArgs e)
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             _items.Clear();
+            Mouse.OverrideCursor = null;
         }
 
         private void AlarmsChangedEventHandler(MonitoredItem monitoredItem, MonitoredItemNotificationEventArgs e)
@@ -78,35 +80,44 @@ namespace CygNet.Opc.Ua.AlarmSample
 
         private void UpdateAlarms(EventFieldList notification, EventFilter filter)
         {
-            lock (_lockObj)
+            try
             {
-                cygnet.CygNetAlarmState cygAlarm = OpcUaClientUtils.ExtractCygNetAlarmState(App.Instance.Session, filter, notification);
+                Mouse.OverrideCursor = Cursors.Wait;
 
-                if (cygAlarm == null)
+                lock (_lockObj)
                 {
-                    return;
-                }
+                    cygnet.CygNetAlarmState cygAlarm = OpcUaClientUtils.ExtractCygNetAlarmState(App.Instance.Session, filter, notification);
 
-                Alarm alarm = _items.FirstOrDefault(i => i.PointTag == cygAlarm.SourceName.Value);
-
-                if (!cygAlarm.Retain.Value)
-                {
-                    if (alarm != null)
+                    if (cygAlarm == null)
                     {
-                        _items.Remove(alarm);
+                        return;
                     }
-                }
-                else
-                {
-                    if (alarm == null)
+
+                    Alarm alarm = _items.FirstOrDefault(i => i.PointTag == cygAlarm.SourceName.Value);
+
+                    if (!cygAlarm.Retain.Value)
                     {
-                        AddNewAlarm(cygAlarm);
+                        if (alarm != null)
+                        {
+                            _items.Remove(alarm);
+                        }
                     }
                     else
                     {
-                        UpdateAlarm(alarm, cygAlarm);
+                        if (alarm == null)
+                        {
+                            AddNewAlarm(cygAlarm);
+                        }
+                        else
+                        {
+                            UpdateAlarm(alarm, cygAlarm);
+                        }
                     }
                 }
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
             }
         }
 
